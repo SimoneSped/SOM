@@ -3,37 +3,35 @@
 import numpy as np
 from line_feature import GaussianFeature
 
-# TODO: add noise
 # TODO: add broadening?
 # TODO: general fine-tuning of parameters
 
+
 class SyntheticSpectrum:
 
-    def __init__(self, interval=None, step=0.1, num_features=5):
+    def __init__(self, size=10000, num_features=5, noise_scale=0.1):
         """
         Class for the creation of synthetic spectra
-        :type interval: numpy array
-        :type step: float
+        :type size: int
         :type num_features: int
+        :type noise_scale: float
         """
-        if interval is None:
-            self._interval = [0, 10000]
-        else:
-            self._interval = interval
-        self._lambda_range = np.arange(interval[0], interval[1], step)
-        self._step = step
-        self._num_features = num_features
-        self._intensities = np.zeros(shape=(len(self._lambda_range)))
+        self.size = size
+        self.lambda_range = np.arange(0, size, 1)
+        self.num_features = num_features
+        self.intensities = np.zeros(shape=size)
+        self.noise_scale = noise_scale
         self.add_features()
+        self.add_noise()
 
     @property
-    def interval(self):
-        return self._interval
+    def size(self):
+        return self._size
 
-    @interval.setter
-    def interval(self, value):
-        self._interval = value
-        self._lambda_range = np.arange(self._interval[0], self._interval[1], self._step)
+    @size.setter
+    def size(self, value):
+        self._size = value
+        self._lambda_range = np.arange(0, self.size, 1)
 
     @property
     def lambda_range(self):
@@ -42,15 +40,6 @@ class SyntheticSpectrum:
     @lambda_range.setter
     def lambda_range(self, value):
         self._lambda_range = value
-
-    @property
-    def step(self):
-        return self._step
-
-    @step.setter
-    def step(self, value):
-        self._step = value
-        self._lambda_range = np.arange(self._interval[0], self._interval[1], self._step)
 
     @property
     def num_features(self):
@@ -71,10 +60,26 @@ class SyntheticSpectrum:
     def intensities(self, value):
         self._intensities = value
 
+    @property
+    def noise_scale(self):
+        return self._noise_scale
+
+    @noise_scale.setter
+    def noise_scale(self, value):
+        self._noise_scale = value
+
     def add_features(self):
-        centroids = np.random.randint(self._interval[1], size=self._num_features) + self._interval[0]
+        centroids = np.random.randint(self.size, size=self.num_features)
         FWHMs = np.random.uniform(
-            20*round(self._interval[1]/10000), 255*round(self._interval[1]/10000), self._num_features)
-        max_int = np.random.uniform(1, 255, self._num_features)
-        for i in range(0, self._num_features):
-            self._intensities += GaussianFeature(centroids[i], FWHMs[i], max_int[i], self._lambda_range).intensities
+            20, 50, self.num_features)
+        max_int = np.random.uniform(0, 255, self.num_features)
+        for i in range(0, self.num_features):
+            self.intensities += GaussianFeature(centroids[i], FWHMs[i], max_int[i], self.lambda_range).intensities
+
+    def add_noise(self):
+        # Method 1
+        # self.intensities += np.random.normal(0, 1, self.interval[1]) * self.intensities * self.noise_scale
+
+        # Method 2 (mask signal with noise)
+
+        self.intensities += self.noise_scale * np.random.normal(0, 1, self.size) * np.sqrt(np.amax(np.abs(self.intensities)))
