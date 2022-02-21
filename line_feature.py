@@ -2,7 +2,7 @@
 import numpy as np
 
 
-class GaussianFeature:
+class LineFeature:
     
     def __init__(self, centroid, FWHM, max_intensity, spectrum_range):
         """

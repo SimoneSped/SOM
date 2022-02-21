@@ -6,9 +6,9 @@ class Neuron:
     def __init__(self, x_0, y_0, weights):
         """
         Class which creates the single neurons of the SOM grid
-        :param x_0: float
-        :param y_0: float
-        :param weights: n-dimensional numpy array
+        :type x_0: float
+        :type y_0: float
+        :type weights: numpy array
         """
         self.x = x_0
         self.y = y_0

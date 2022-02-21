@@ -1,26 +1,27 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from line_feature import GaussianFeature
+from line_feature import LineFeature
 
-# TODO: add broadening?
-# TODO: general fine-tuning of parameters
+
+# TODO: add broadening and HFS?
 
 
 class SyntheticSpectrum:
 
-    def __init__(self, size=10000, num_features=5, noise_scale=0.1):
+    def __init__(self, size=200, num_features=5, target_snr=0.1):
         """
         Class for the creation of synthetic spectra
         :type size: int
         :type num_features: int
-        :type noise_scale: float
+        :type target_snr: int
         """
         self.size = size
         self.lambda_range = np.arange(0, size, 1)
         self.num_features = num_features
         self.intensities = np.zeros(shape=size)
-        self.noise_scale = noise_scale
+        self.target_snr = target_snr
+        self.centroids = []
         self.add_features()
         self.add_noise()
 
@@ -61,25 +62,39 @@ class SyntheticSpectrum:
         self._intensities = value
 
     @property
-    def noise_scale(self):
-        return self._noise_scale
+    def target_snr(self):
+        return self._target_snr
 
-    @noise_scale.setter
-    def noise_scale(self, value):
-        self._noise_scale = value
+    @target_snr.setter
+    def target_snr(self, value):
+        self._target_snr = value
+
+    @property
+    def centroids(self):
+        return self._centroids
+
+    @centroids.setter
+    def centroids(self, value):
+        self._centroids = value
 
     def add_features(self):
-        centroids = np.random.randint(self.size, size=self.num_features)
+        self.centroids = np.random.randint(self.size, size=self.num_features)
         FWHMs = np.random.uniform(
-            20, 50, self.num_features)
-        max_int = np.random.uniform(0, 255, self.num_features)
+            3, 8, self.num_features) * 2.3548
+        max_intensities = np.random.uniform(55, 255, self.num_features)
         for i in range(0, self.num_features):
-            self.intensities += GaussianFeature(centroids[i], FWHMs[i], max_int[i], self.lambda_range).intensities
+            self.intensities += LineFeature(
+                self.centroids[i],
+                FWHMs[i],
+                max_intensities[i],
+                self.lambda_range).intensities
 
     def add_noise(self):
-        # Method 1
-        # self.intensities += np.random.normal(0, 1, self.interval[1]) * self.intensities * self.noise_scale
+        white_gaussian_noise = np.random.normal(0, 1, self.size)
+        pwr_signal = np.sqrt(np.sum(self.intensities**2))/self.size
+        pwr_noise = np.sqrt(np.sum(white_gaussian_noise**2))/self.size
 
-        # Method 2 (mask signal with noise)
+        scale_factor = (pwr_signal / pwr_noise) / self.target_snr
+        white_gaussian_noise = scale_factor * white_gaussian_noise
 
-        self.intensities += self.noise_scale * np.random.normal(0, 1, self.size) * np.sqrt(np.amax(np.abs(self.intensities)))
+        self.intensities += white_gaussian_noise
