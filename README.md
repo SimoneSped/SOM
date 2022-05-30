@@ -67,13 +67,11 @@
 
 Python tool for the application of a machine learning technique, the so-called Self-Organinzing Maps of Features, to the world of spectral analysis. This aims at speeding up the process of categorization and Gaussian decomposition through the means of pattern e.g. similarities recognition in the implemented neuron network. This idea was first introduced in <a href=https://ieeexplore.ieee.org/abstract/document/58325> a 1990 paper from T. Kohonen</a>, pointing out at the astonishing ways the neurons in the human brain orgnize themselves when reacting to sensorial input. This work is implemented in the context of the Bachelor Thesis in Astronomy and Astrophysics by Simone Spedicato.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Coded In
 
 * [Python](https://www.python.org/)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!--## Getting Started
@@ -114,7 +112,6 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 
@@ -127,9 +124,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
     - [ ] Further hanling of worse fits
 - [ ] Study of absorption line profiles
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/SimoneSped/SOM/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!-- CONTRIBUTING 
@@ -157,8 +153,6 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
@@ -169,15 +163,13 @@ Simone Spedicato - simonespedicatospf@gmail.com
 
 Project Link: [https://github.com/SimoneSped/SOM](https://github.com/SimoneSped/SOM)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
 
-* [EMERGE Group @ Astronomy Institute of the University of Vienna]()
+* [EMERGE Group @ Astronomy Institute of the University of Vienna](https://emerge.univie.ac.at/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
