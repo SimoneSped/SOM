@@ -165,7 +165,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Simone Spedicato - [@twitter_handle](https://twitter.com/twitter_handle) - simonespedicatospf@gmail.com
+Simone Spedicato - simonespedicatospf@gmail.com
 
 Project Link: [https://github.com/SimoneSped/SOM](https://github.com/SimoneSped/SOM)
 
@@ -177,9 +177,7 @@ Project Link: [https://github.com/SimoneSped/SOM](https://github.com/SimoneSped/
 
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* [EMERGE Group @ Astronomy Institute of the University of Vienna]()
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
