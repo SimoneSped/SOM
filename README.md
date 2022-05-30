@@ -59,9 +59,13 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<div align="center">
+  <a href="https://github.com/SimoneSped/SOM/">
+    <img src="figures/fits.png" alt="Logo">
+  </a>
+</div>
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+Python tool for the application of a machine learning technique, the so-called Self-Organinzing Maps of Features, to the world of spectral analysis. This aims at speeding up the process of categorization and Gaussian decomposition through the means of pattern e.g. similarities recognition in the implemented neuron network. This idea was first introduced in <a href=https://ieeexplore.ieee.org/abstract/document/58325> a 1990 paper from T. Kohonen</a>, pointing out at the astonishing ways the neurons in the human brain orgnize themselves when reacting to sensorial input. This work is implemented in the context of the Bachelor Thesis in Astronomy and Astrophysics by Simone Spedicato.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -187,4 +191,4 @@ Project Link: [https://github.com/SimoneSped/SOM](https://github.com/SimoneSped/
 [stars-url]: https://github.com/github_username/repo_name/stargazers
 [license-shield]: https://img.shields.io/github/license/SimoneSped/SOM
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-
+[fits-screenshot]: figures/fits.png
