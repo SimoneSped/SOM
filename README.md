@@ -1,3 +1,4 @@
+<div id="top"></div>
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -19,7 +20,7 @@
   <p align="center">
     Application of a Self-Organizing Map to the context of spectral analysis
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs (Coming Soon) »</strong></a>
     <br />
     <br />
     <a href="#usage">Example</a>
@@ -68,7 +69,7 @@
 Python tool for the application of a machine learning technique, the so-called Self-Organinzing Maps of Features, to the world of spectral analysis. This aims at speeding up the process of categorization and Gaussian decomposition through the means of pattern e.g. similarities recognition in the implemented neuron network. This idea was first introduced in a <a href=https://ieeexplore.ieee.org/abstract/document/58325> 1990 paper from T. Kohonen</a>, pointing out at the astonishing ways the neurons in the human brain orgnize themselves when reacting to sensorial input. This work is implemented in the context of the Bachelor Thesis in Astronomy and Astrophysics by Simone Spedicato.
 
 
-### Coded In
+### Built With
 
 * [Python](https://www.python.org/)
 
@@ -106,11 +107,11 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 
-## Example
+## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Coming Soon...
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](https://example.com)_(Coming Soon)
 
 
 <!-- ROADMAP -->
