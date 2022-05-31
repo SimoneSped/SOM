@@ -66,7 +66,7 @@
   </a>
 </div>
 
-Python tool for the application of a machine learning technique, the so-called Self-Organinzing Maps of Features, to the world of spectral analysis. This aims at speeding up the process of categorization and Gaussian decomposition through the means of pattern e.g. similarities recognition in the implemented neuron network. This idea was first introduced in a <a href=https://ieeexplore.ieee.org/abstract/document/58325> 1990 paper from T. Kohonen</a>, pointing out at the astonishing ways the neurons in the human brain orgnize themselves when reacting to sensorial input. This work is implemented in the context of the Bachelor Thesis in Astronomy and Astrophysics by Simone Spedicato.
+Python tool for the application of a machine learning technique, the so-called Self-Organinzing Maps of Features, to the world of spectral analysis. This aims at speeding up the process of categorization and Gaussian decomposition through the means of pattern e.g. similarities recognition in the implemented neuron network. This idea was first introduced in a <a href=https://ieeexplore.ieee.org/abstract/document/58325> 1990 paper by T. Kohonen</a>, pointing out at the astonishing ways the neurons in the human brain orgnize themselves when reacting to sensorial input. This work is implemented in the context of the Bachelor Thesis in Astronomy and Astrophysics @ University of Vienna by Simone Spedicato.
 
 
 ### Built With
