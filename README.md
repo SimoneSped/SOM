@@ -123,6 +123,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_(Co
     - [ ] Better input handling
     - [ ] Further handling of the worse fits
 - [ ] Study of absorption line profiles
+- [ ] Study of fine and hyper-fine profiles
 
 See the [open issues](https://github.com/SimoneSped/SOM/issues) for a full list of proposed features (and known issues).
 
