@@ -5,7 +5,6 @@ import pandas as pd
 
 
 class Cluster:
-
     def __init__(self, members=np.empty(shape=1), distance_threshold=0.01):
         """
         Class for the implementation of the cluster in a FoF sense
@@ -38,34 +37,34 @@ class Cluster:
             raise ValueError("Distance Threshold not valid.")
         else:
             self._distance_threshold = value
-            
+
     def update_clustering_index(self, distance):
-        # function to update an index to keep track of the "goodness" of the 
-        # cluster, directly proportional to the number of components and 
+        # function to update an index to keep track of the "goodness" of the
+        # cluster, directly proportional to the number of components and
         # inversely to the distance
-        
-        self.clustering_index = len(self.members)*(1/(len(self.members)-1)*self.clustering_index + 1/(distance))
-    
+
+        self.clustering_index = len(self.members) * (
+            1 / (len(self.members) - 1) * self.clustering_index + 1 / (distance)
+        )
+
     def average_weights(self):
         # function to return the averaged weights of the cluster
-        
-        member_weights = np.zeros(
-            shape = len(self.members[0].weights)
-            )
+
+        member_weights = np.zeros(shape=len(self.members[0].weights))
         for member in self.members:
             member_weights = member_weights + member.weights
-        self.average_members_weights = member_weights/len(self.members)
-        
+        self.average_members_weights = member_weights / len(self.members)
+
     def add_member(self, new_member, distance):
         # function to add a new member ot the existing cluster
-        
+
         self.members = np.append(self.members, new_member)
-        
+
         # update the index with the new member
         self.update_clustering_index(distance)
 
-class Neuron:
 
+class Neuron:
     def __init__(self, x_0, y_0, weights):
         """
         Class which creates the single neurons of the SOM grid
@@ -103,9 +102,16 @@ class Neuron:
 
 
 class SOM:
-
-    def __init__(self, x_size=20, y_size=20, size_neurons=10000, learning_rate_0=0.5, radius_0=0.1,
-                 cluster_distance_threshold=0.04, input_data=None):
+    def __init__(
+        self,
+        x_size=20,
+        y_size=20,
+        size_neurons=10000,
+        learning_rate_0=0.5,
+        radius_0=0.1,
+        cluster_distance_threshold=0.04,
+        input_data=None,
+    ):
         """
         Class for the implementation of the self-organizing maps
         :type x_size: int
@@ -119,35 +125,27 @@ class SOM:
         self.x_size = x_size
         self.y_size = y_size
         self.size_neurons = size_neurons
-        
+
         self.iteration = 0
         self.time_constant = 200
         self.learning_rate_0 = learning_rate_0
         self.learning_rate = learning_rate_0
         self.radius_0 = radius_0
         self.radius = radius_0
-        
+
         self.cluster_distance_threshold = cluster_distance_threshold
-        
+
         self.input_data = input_data
-        
-        self.neuron_map = np.zeros(
-            shape=(x_size, y_size),
-            dtype=object
-        )
-        self.clusters = np.array(
-            [],
-            dtype=object
-        )
+
+        self.neuron_map = np.zeros(shape=(x_size, y_size), dtype=object)
+        self.clusters = np.array([], dtype=object)
         self.matches_input_to_clusters = []
         self.averaged_spectra_df = []
-        
+
         for i in range(self._x_size):
             for j in range(self._y_size):
                 self._neuron_map[i][j] = Neuron(
-                    i / x_size,
-                    j / y_size,
-                    np.random.uniform(1E-3, 9E-4, size_neurons)
+                    i / x_size, j / y_size, np.random.uniform(1e-3, 9e-4, size_neurons)
                 )
 
     @property
@@ -252,7 +250,7 @@ class SOM:
         for vector in value:
             if len(vector) != len_0:
                 raise ValueError("Input data of different lengths.")
-        if len(value) < 300: # this
+        if len(value) < 300:  # this
             raise ValueError("Too few input data.")
         self._input_data = value
 
@@ -281,15 +279,17 @@ class SOM:
         self._matches_input_to_clusters = value
 
     def find_bmu(self, input_vector):
-        # compute euclidian distance from the input vector 
+        # compute euclidian distance from the input vector
         # to the weight vector of the neurons
         distances = np.array(
-            [np.linalg.norm(self.neuron_map[i][j].weights - input_vector)
-            for i in range(self.x_size)
-            for j in range(self.y_size)]
+            [
+                np.linalg.norm(self.neuron_map[i][j].weights - input_vector)
+                for i in range(self.x_size)
+                for j in range(self.y_size)
+            ]
         ).reshape((self.x_size, self.y_size))
-        
-        # return the index of the neuron 
+
+        # return the index of the neuron
         # with minimal distance (a.k.a. the best-matching unit)
         minimal_distance = np.where(distances == np.amin(distances))
         return [minimal_distance[0][0], minimal_distance[1][0]]
@@ -302,16 +302,17 @@ class SOM:
         for neuron_line in self.neuron_map:
             for neuron in neuron_line:
                 # find each neuron that falls into the radius from the bmu at this iteration
-                if (neuron.x - bmu.x) ** 2 + (neuron.y - bmu.y) ** 2 <= self.radius ** 2:
+                if (neuron.x - bmu.x) ** 2 + (
+                    neuron.y - bmu.y
+                ) ** 2 <= self.radius ** 2:
                     # update weights of the found neurons accordingly
                     neuron.weights = neuron.weights + self.learning_rate * (
-                            input_vector - neuron.weights)
+                        input_vector - neuron.weights
+                    )
 
                     # update positions of the found neurons accordingly
-                    neuron.x += self.learning_rate * (
-                            bmu.x - neuron.x)
-                    neuron.y += self.learning_rate * (
-                            bmu.y - neuron.y)
+                    neuron.x += self.learning_rate * (bmu.x - neuron.x)
+                    neuron.y += self.learning_rate * (bmu.y - neuron.y)
         self.update_learning_rate()
         self.update_radius()
         self.iteration = self.iteration + 1
@@ -322,16 +323,14 @@ class SOM:
 
     def update_learning_rate(self):
         # update the learning rate with the known formula
-        self.learning_rate = self.learning_rate_0 * np.exp(-self.iteration / self.time_constant)
+        self.learning_rate = self.learning_rate_0 * np.exp(
+            -self.iteration / self.time_constant
+        )
 
     def find_clusters(self):
         # FoF
         # make list of valid points
-        list_points = [
-            [i, j]
-            for i in range(self.x_size)
-            for j in range(self.y_size)
-        ]
+        list_points = [[i, j] for i in range(self.x_size) for j in range(self.y_size)]
 
         while list_points:
             # choose random valid point to start with
@@ -341,8 +340,10 @@ class SOM:
             cluster = Cluster([start_neuron], self.cluster_distance_threshold)
             for point in list_points:
                 # calculate distance for each point to the starting neuron
-                distance = np.sqrt((self.neuron_map[point[0]][point[1]].x - start_neuron.x) ** 2 + (
-                        self.neuron_map[point[0]][point[1]].y - start_neuron.y) ** 2)
+                distance = np.sqrt(
+                    (self.neuron_map[point[0]][point[1]].x - start_neuron.x) ** 2
+                    + (self.neuron_map[point[0]][point[1]].y - start_neuron.y) ** 2
+                )
                 if distance <= cluster.distance_threshold:
                     # add member to cluster
                     cluster.add_member(self.neuron_map[point[0]][point[1]], distance)
@@ -353,11 +354,17 @@ class SOM:
             for j in range(1, len(cluster.members)):
                 for point in list_points:
                     # calculate distance for each remaining point to the friends of the starting neuron
-                    distance = np.sqrt((self.neuron_map[point[0]][point[1]].x - cluster.members[j].x) ** 2 + (
-                            self.neuron_map[point[0]][point[1]].y - cluster.members[j].y) ** 2)
+                    distance = np.sqrt(
+                        (self.neuron_map[point[0]][point[1]].x - cluster.members[j].x)
+                        ** 2
+                        + (self.neuron_map[point[0]][point[1]].y - cluster.members[j].y)
+                        ** 2
+                    )
                     if distance <= cluster.distance_threshold:
                         # add member to cluster
-                        cluster.add_member(self.neuron_map[point[0]][point[1]], distance)
+                        cluster.add_member(
+                            self.neuron_map[point[0]][point[1]], distance
+                        )
                         # remove indexes from list of valid points
                         list_points.remove(point)
             # more or less subjective threshold for number of members
@@ -374,56 +381,71 @@ class SOM:
         # self.clusters = sorted(self.clusters, key=lambda n: n.clustering_index)
 
     def match_input_to_cluster(self):
-        matches_df = pd.DataFrame(
-            columns=['Cluster_number', 'Distance', 'Index']
-        )
+        matches_df = pd.DataFrame(columns=["Cluster_number", "Distance", "Index"])
         # associate each spectrum to a cluster, plot them
         count = 0
         for spectrum in self.input_data:
             distances = np.array([])
             for cluster in self.clusters:
-                distances = np.append(distances, np.linalg.norm(cluster.average_members_weights - spectrum))
-                
+                distances = np.append(
+                    distances,
+                    np.linalg.norm(cluster.average_members_weights - spectrum),
+                )
+
             # store the best matching cluster with the minimal distance as an array of
             # [cluster_number, distance, index], where cluster_number is related to the ordering
             # in the clusters array, hence based on the best clustering index
             matches_df = matches_df.append(
-                pd.DataFrame([[np.where(distances == np.amin(distances))[0][0],
-                            np.amin(distances), count]], columns=['Cluster_number', 'Distance', 'Index'],), ignore_index=True
+                pd.DataFrame(
+                    [
+                        [
+                            np.where(distances == np.amin(distances))[0][0],
+                            np.amin(distances),
+                            count,
+                        ]
+                    ],
+                    columns=["Cluster_number", "Distance", "Index"],
+                ),
+                ignore_index=True,
             )
             count += 1
 
         # sort the results from lowest to highest distance for each cluster_number
-        self.matches_input_to_clusters = matches_df.sort_values(['Cluster_number', 'Distance', 'Index'], ascending=[True, True, False])
+        self.matches_input_to_clusters = matches_df.sort_values(
+            ["Cluster_number", "Distance", "Index"], ascending=[True, True, False]
+        )
 
-    
     def average_spectra(self):
         # create the apposite dataframe for the averged spectra per cluster
         self.averaged_spectra_df = pd.DataFrame(
-            columns=['Cluster_number', 'Avg_Spectrum']
+            columns=["Cluster_number", "Avg_Spectrum"]
         )
         # cycle through the clusters
         for i in range(len(self.clusters)):
             # mock spectra variable
             spectra = np.zeros(len(self.input_data[0]))
-            
+
             # get spectra from i-th cluster
-            df = self.matches_input_to_clusters.loc[self.matches_input_to_clusters['Cluster_number']
-                                                    == i]
-            # cycle through the single spectra, average them and add them 
+            df = self.matches_input_to_clusters.loc[
+                self.matches_input_to_clusters["Cluster_number"] == i
+            ]
+            # cycle through the single spectra, average them and add them
             # to the dataframe
             for j in range(0, len(df)):
                 spectra = spectra + self.input_data[df.iloc[j].Index]
             self.averaged_spectra_df = self.averaged_spectra_df.append(
-                pd.DataFrame([[i, spectra/len(df)]], columns=['Cluster_number', 'Avg_Spectrum']), ignore_index=True
+                pd.DataFrame(
+                    [[i, spectra / len(df)]], columns=["Cluster_number", "Avg_Spectrum"]
+                ),
+                ignore_index=True,
             )
 
     def start(self, num_cycles=1):
-        # repeating the som cylce for a certain number of times, 
+        # repeating the som cylce for a certain number of times,
         # with decreasing impacting parameters
         for n in range(0, num_cycles):
-            self.radius = (1/(n+1))*self.radius_0
-            self.learning_rate = (1/(n+1))*self.learning_rate_0
+            self.radius = (1 / (n + 1)) * self.radius_0
+            self.learning_rate = (1 / (n + 1)) * self.learning_rate_0
             [self.update_grid(vector) for vector in self.input_data]
         self.find_clusters()
         self.match_input_to_cluster()

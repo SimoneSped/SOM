@@ -2,8 +2,8 @@
 import numpy as np
 import random
 
-class LineFeature:
 
+class LineFeature:
     def __init__(self, centroid, FWHM, max_intensity, spectrum_range):
         """
         Class for the implementation of the single gaussian features
@@ -73,12 +73,20 @@ class LineFeature:
         self._intensities = value
 
     def profile(self):
-        return self.max_intensity * np.exp(-0.5 * (((self.spectrum_range - self.centroid) / self.sigma) ** 2))
+        return self.max_intensity * np.exp(
+            -0.5 * (((self.spectrum_range - self.centroid) / self.sigma) ** 2)
+        )
 
 
 class SyntheticSpectrum:
-
-    def __init__(self, size=200, num_features=5, target_snr=0.1, spatial_separation=0, desired_feautures=None):
+    def __init__(
+        self,
+        size=200,
+        num_features=5,
+        target_snr=0.1,
+        spatial_separation=0,
+        desired_feautures=None,
+    ):
         """
         Class for the creation of synthetic spectra
         :type size: int
@@ -168,67 +176,73 @@ class SyntheticSpectrum:
 
     def add_features(self):
         # function to add features to the spectrum
-        
+
         # checks if there are some desired features
         if self.desired_features == None:
             # no desired features
-            
+
             # generate centroids with a certain minimum separation
             self.centroids = [
-                (self.spatial_separation-1)*i + x for i,
-                x in enumerate(
+                (self.spatial_separation - 1) * i + x
+                for i, x in enumerate(
                     sorted(
-                        random.sample(range(self.size - (self.num_features-1)*(self.spatial_separation-1)), self.num_features)
+                        random.sample(
+                            range(
+                                self.size
+                                - (self.num_features - 1)
+                                * (self.spatial_separation - 1)
+                            ),
+                            self.num_features,
                         )
                     )
-                ]
+                )
+            ]
 
-            # generate typical FWHM from a certain distribution             
-            self.FWHMs = np.random.uniform(
-                3, 8, self.num_features)
-            
-            # generate typical amplitudes from a certain distribution  
-            self.max_intensities = np.random.uniform(
-                55, 255, self.num_features)
-            
+            # generate typical FWHM from a certain distribution
+            self.FWHMs = np.random.uniform(3, 8, self.num_features)
+
+            # generate typical amplitudes from a certain distribution
+            self.max_intensities = np.random.uniform(55, 255, self.num_features)
+
             # add each feature to the spectrm
             for i in range(0, self.num_features):
                 self.intensities += LineFeature(
                     self.centroids[i],
                     self.FWHMs[i],
                     self.max_intensities[i],
-                    self.lambda_range).intensities
+                    self.lambda_range,
+                ).intensities
         else:
             # desired feautures
-            
+
             self.centroids = []
             self.FWHMs = []
             self.max_intensities = []
-            
+
             for i in range(0, len(self.desired_features)):
                 # take the desired centroid
                 self.centroids.append(self.desired_features[i][0])
-                
+
                 # generate a typical amplitude from a certain distribution
-                self.max_intensities.append(np.random.uniform(
-                    55, 255))
-                
+                self.max_intensities.append(np.random.uniform(55, 255))
+
                 # take the desired FWHM
                 self.FWHMs.append(self.desired_features[i][2])
-                
+
                 # add the feature to the spectrum
                 self.intensities += LineFeature(
                     self.centroids[i],
                     self.FWHMs[i],
                     self.max_intensities[i],
-                    self.lambda_range).intensities
+                    self.lambda_range,
+                ).intensities
 
     def add_noise(self):
         # function to add white gaussian noise to the mock spectra
-        
+
         white_gaussian_noise = np.random.normal(0, 1, self.size)
-        pwr_signal = np.sqrt(np.sum(self.intensities**2))/self.size
-        pwr_noise = np.sqrt(np.sum(white_gaussian_noise**2))/self.size
+        pwr_signal = np.sqrt(np.sum(self.intensities ** 2)) / self.size
+        pwr_noise = np.sqrt(np.sum(white_gaussian_noise ** 2)) / self.size
 
         if self.num_features == 0:
             # add fictive feature to empty spectra, then remove it
@@ -236,7 +250,8 @@ class SyntheticSpectrum:
                 np.random.randint(self.size),
                 np.random.uniform(5, 8, 1),
                 np.random.uniform(155, 255, 1),
-                self.lambda_range).intensities
+                self.lambda_range,
+            ).intensities
             self.intensities += fictive_line
             pwr_signal = np.sqrt(np.sum(self.intensities ** 2)) / self.size
             self.intensities -= fictive_line
@@ -244,4 +259,3 @@ class SyntheticSpectrum:
         white_gaussian_noise = scale_factor * white_gaussian_noise
 
         self.intensities += white_gaussian_noise
-        
